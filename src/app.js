@@ -1,6 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import mongodb from './database/mongodb.js';
+import routes from './routes/index.js';
 
 (async () => {
 	const app = express();
@@ -15,6 +17,8 @@ import path from 'path';
 	app.use(express.urlencoded({ extended: true }));
 	app.use(express.static(path.join(path.resolve(), 'public')));
 
+	routes(app);
+	await mongodb.connect();
 	app.listen(port, () => {
 		console.log(`App listening at ${host}:${port}`);
 	});
